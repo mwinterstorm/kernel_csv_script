@@ -1,13 +1,12 @@
-# docker-compose.yml
 services:
   parser:
     image: securities-parser:latest
     build: .
     volumes:
-      - ./:/data
+      - ./input:/input
+      - ./output:/output
     environment:
-      INPUT_XLSX: "/data/113313 GeneralLedger Report 11 Aug 2025.xlsx"
-      OUTPUT_CSV: "/data/securities_trades.csv"
       SHEET: "Securities"
       SKIPROWS: "2"
       AMOUNT_COLUMNS: "col10,col8,col12,col11,col14,col15"
+      PATTERN: "*.xlsx"

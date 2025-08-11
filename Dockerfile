@@ -4,7 +4,6 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1
 
-# Install deps (wheels mean no compiler needed)
 COPY requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
 
@@ -13,11 +12,10 @@ COPY parse_securities.py /app/parse_securities.py
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-# Non-root user
+# Non-root is safer; if you hit host-permissions, run the container with --user $(id -u):$(id -g)
 RUN useradd -m appuser
 USER appuser
 
-# Mount point for your local files
-VOLUME ["/data"]
+VOLUME ["/input", "/output"]
 
 ENTRYPOINT ["/entrypoint.sh"]

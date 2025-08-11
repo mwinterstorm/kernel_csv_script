@@ -1,14 +1,17 @@
 #!/usr/bin/env sh
-set -euo pipefail
+set -eu 
 
-: "${INPUT_XLSX:?Set INPUT_XLSX to path of .xlsx in /data}"
-: "${OUTPUT_CSV:=/data/out.csv}"
+: "${INPUT_DIR:=/input}"
+: "${OUTPUT_FILE:=/output/kernel_trades.csv}"
 : "${SHEET:=Securities}"
 : "${SKIPROWS:=2}"
 : "${AMOUNT_COLUMNS:=col10,col8,col12,col11,col14,col15}"
+: "${PATTERN:=*.xlsx}"
 
 exec python /app/parse_securities.py \
-  "$INPUT_XLSX" "$OUTPUT_CSV" \
+  --input-dir "$INPUT_DIR" \
+  --output-file "$OUTPUT_FILE" \
   --sheet "$SHEET" \
   --skiprows "$SKIPROWS" \
-  --amount-columns "$AMOUNT_COLUMNS"
+  --amount-columns "$AMOUNT_COLUMNS" \
+  --pattern "$PATTERN"
